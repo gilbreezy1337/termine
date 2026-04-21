@@ -1,67 +1,63 @@
 exports.handler = async function(event) {
   const email = (event.queryStringParameters?.email || '').trim().toLowerCase();
-
   if (!email || !email.includes('@')) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: 'Ungültige E-Mail' })
-    };
+    return { statusCode: 400, body: JSON.stringify({ error: 'Ungültige E-Mail' }) };
   }
 
-  const PAT      = process.env.AIRTABLE_PAT;
-  const BASE_ID  = 'appflLzAciq6NMD0i';
-  const TABLE    = 'Matchlogs_VIE';
+  const PAT     = process.env.AIRTABLE_PAT;
+  const BASE_ID = 'appflLzAciq6NMD0i';
+  const TABLE   = 'Matchlogs_VIE';
 
   if (!PAT) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Server-Konfigurationsfehler: Token fehlt' })
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: 'Token fehlt' }) };
   }
 
+  // Alle Felder laden — kein field-ID-Filter — funktioniert immer
   const formula = `FIND("${email.replace(/"/g, '')}", LOWER({fldXermcL7ly0GeHv}))`;
   const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}`
     + `?filterByFormula=${encodeURIComponent(formula)}`
     + `&sort%5B0%5D%5Bfield%5D=fldxAaFiiC7xve8cj&sort%5B0%5D%5Bdirection%5D=desc`
-    + `&maxRecords=1&fields%5B%5D=fldXermcL7ly0GeHv&fields%5B%5D=fldxAaFiiC7xve8cj`;
+    + `&maxRecords=1`;
 
   try {
     const res  = await fetch(url, { headers: { Authorization: 'Bearer ' + PAT } });
     const data = await res.json();
 
     if (!res.ok) {
-      return {
-        statusCode: res.status,
-        body: JSON.stringify({ error: data?.error?.message || 'Airtable-Fehler' })
-      };
+      return { statusCode: res.status, body: JSON.stringify({ error: data?.error?.message || 'Airtable-Fehler' }) };
     }
-
     if (!data.records?.length) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ found: false })
-      };
+      return { statusCode: 404, body: JSON.stringify({ found: false }) };
     }
 
-    const rec     = data.records[0];
-    const raw     = rec.fields['fldXermcL7ly0GeHv'] || '';
-    const members = parseMembers(raw);
+    const rec    = data.records[0];
+    const fields = rec.fields;
+
+    // Felder automatisch erkennen — unabhängig von ID oder Name als Key
+    let membersRaw = '';
+    let dateRaw    = '';
+
+    for (const [key, val] of Object.entries(fields)) {
+      if (typeof val === 'string' && val.includes('@') && val.includes('(')) {
+        membersRaw = val;
+      }
+      if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val) && !dateRaw) {
+        dateRaw = val;
+      }
+    }
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        found:   true,
-        id:      rec.id,
-        date:    (rec.fields['fldxAaFiiC7xve8cj'] || '').slice(0, 10),
-        members
+        found: true,
+        id: rec.id,
+        date: dateRaw.slice(0, 10),
+        members: parseMembers(membersRaw)
       })
     };
   } catch(e) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: e.message })
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
 };
 
