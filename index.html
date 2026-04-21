@@ -10,49 +10,44 @@
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     html,body{height:100%}
     body{font-family:'DM Sans',sans-serif;background:#fff;color:#1a1a1a;font-size:16px;-webkit-font-smoothing:antialiased}
-
     .screen{display:none;flex-direction:column;min-height:100vh;padding:clamp(1.5rem,5vw,2.5rem) clamp(1.25rem,5vw,2.25rem);max-width:640px;margin:0 auto}
     .screen.active{display:flex}
     @keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
     .screen.active{animation:up .25s ease}
-
     .topbar{border-bottom:2.5px solid #2387E4;padding-bottom:.9rem;margin-bottom:2rem}
-    .logotype{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:16px;letter-spacing:.03em;text-transform:uppercase;color:#2387E4}
-    .logotype-sub{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:#aaa;margin-left:10px}
-    .page-title{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(28px,7vw,38px);letter-spacing:.01em;text-transform:uppercase;color:#2387E4;margin-bottom:.85rem;line-height:1}
-    .section-title{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:19px;letter-spacing:.02em;text-transform:uppercase;color:#2387E4;margin-bottom:.65rem}
-
+    .logotype{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:17px;letter-spacing:0;text-transform:uppercase;color:#2387E4}
+    .logotype-sub{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:#aaa;margin-left:10px}
+    .page-title{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(32px,8vw,44px);letter-spacing:0;text-transform:uppercase;color:#2387E4;margin-bottom:.85rem;line-height:.95}
+    .section-title{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:20px;letter-spacing:0;text-transform:uppercase;color:#2387E4;margin-bottom:.65rem}
+    .btn-primary{display:block;width:100%;padding:15px 20px;background:#2387E4;color:#fff;border:none;border-radius:6px;font-family:'Big Shoulders Display',sans-serif;font-size:22px;font-weight:800;letter-spacing:0;text-transform:uppercase;cursor:pointer;touch-action:manipulation}
+    .btn-primary:disabled{opacity:.45;cursor:wait}
+    .btn-secondary{width:100%;padding:13px;background:#2387E4;color:#fff;border:none;border-radius:6px;font-family:'Big Shoulders Display',sans-serif;font-size:19px;font-weight:800;letter-spacing:0;text-transform:uppercase;cursor:pointer;touch-action:manipulation;margin-top:8px}
     .card{background:#f8f7f5;border:1.5px solid #e0e0e0;border-radius:6px;padding:.9rem 1rem;margin-bottom:1rem}
     .field-label{display:block;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:6px}
     .err-msg{font-size:13px;color:#c0392b;margin-top:8px;min-height:18px}
     .empty-hint{text-align:center;padding:1.5rem 1rem;font-size:13px;color:#aaa;border:1px dashed #ddd;border-radius:6px}
     .best-banner{background:#eef6fd;border:1px solid rgba(35,135,228,.3);border-radius:6px;padding:.75rem 1rem;font-size:13px;color:#1a6fc0;margin-top:.75rem;line-height:1.5}
-
     .intro-text{font-size:15px;line-height:1.8;color:#444;margin-bottom:1.75rem}
     .email-input{display:block;width:100%;border:1.5px solid #ddd;border-radius:6px;padding:14px;font-family:'DM Sans',sans-serif;font-size:16px;color:#1a1a1a;background:#fff;outline:none;-webkit-appearance:none;margin-bottom:12px;transition:border-color .18s}
     .email-input:focus{border-color:#2387E4}
     .email-input::placeholder{color:#ccc}
-
     #sload{align-items:center;justify-content:center}
     .spinner{width:28px;height:28px;border:2px solid #eee;border-top-color:#2387E4;border-radius:50%;animation:spin .75s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .load-label{font-size:13px;color:#aaa;margin-top:12px}
-
     .g-topbar{border-bottom:2.5px solid #2387E4;padding-bottom:.8rem;margin-bottom:1.25rem;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px}
-    .g-logo{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:16px;letter-spacing:.03em;text-transform:uppercase;color:#2387E4}
+    .g-logo{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:17px;letter-spacing:0;text-transform:uppercase;color:#2387E4}
     .g-month{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#aaa}
-
+    .btn-back{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;color:#aaa;padding:0;margin-bottom:1.5rem;display:flex;align-items:center;gap:5px;letter-spacing:.08em;text-transform:uppercase;touch-action:manipulation;min-height:44px}
     .members-strip{display:grid;grid-template-columns:repeat(3,1fr);border:1.5px solid #e0e0e0;border-radius:6px;overflow:hidden;margin-bottom:1.5rem;background:#f8f7f5}
     .member-cell{padding:.75rem .4rem;display:flex;flex-direction:column;align-items:center;gap:5px;border-right:1px solid #e0e0e0;text-align:center}
     .member-cell:last-child{border-right:none}
     .avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#fff;flex-shrink:0}
     .member-name{font-size:12px;font-weight:500;line-height:1.35;color:#1a1a1a;word-break:break-word}
     .you-tag{font-size:9px;color:#2387E4;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
-
     .slot-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .slot-row input{border:1.5px solid #ddd;border-radius:6px;padding:11px 10px;font-size:16px;font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fff;outline:none;width:100%;-webkit-appearance:none;transition:border-color .18s}
     .slot-row input:focus{border-color:#2387E4}
-
     .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
     .vote-table{width:100%;border-collapse:collapse;min-width:260px}
     .vote-table th{padding:5px 6px;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#aaa;border-bottom:1.5px solid #e0e0e0;text-align:center;white-space:nowrap}
@@ -63,14 +58,12 @@
     .slot-time{font-size:11px;color:#aaa;margin-top:1px}
     .count-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;margin:0 auto}
     .cnt-0{background:#ebebea;color:#aaa}.cnt-1{background:#fef3cd;color:#7a5a00}.cnt-2{background:#d4ede0;color:#1b5e20}.cnt-3{background:#2387E4;color:#fff}
-
     .place-search-wrap{position:relative;margin-bottom:8px}
     .place-input{display:block;width:100%;border:1.5px solid #ddd;border-radius:6px;padding:11px 42px 11px 12px;font-size:15px;font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fff;outline:none;-webkit-appearance:none;transition:border-color .18s}
     .place-input:focus{border-color:#2387E4}
     .place-input::placeholder{color:#ccc}
     .search-icon{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;opacity:.4}
     .search-spinner{position:absolute;right:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;border:2px solid #eee;border-top-color:#2387E4;border-radius:50%;animation:spin .6s linear infinite;display:none}
-
     .suggestions{background:#fff;border:1.5px solid #ddd;border-top:none;border-radius:0 0 6px 6px;overflow:hidden;display:none;box-shadow:0 4px 12px rgba(0,0,0,.08);position:relative;z-index:10;margin-top:-2px}
     .sug-item{padding:10px 12px;cursor:pointer;border-bottom:1px solid #f2f2f2;transition:background .1s}
     .sug-item:last-child{border-bottom:none}
@@ -79,7 +72,6 @@
     .sug-addr{font-size:11px;color:#aaa;margin-top:2px}
     .sug-manual{padding:10px 12px;cursor:pointer;font-size:13px;color:#2387E4;font-weight:500;border-top:1px solid #f0f0f0}
     .sug-manual:hover{background:#f0f7ff}
-
     .place-item{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid #ebebeb}
     .place-item:last-child{border-bottom:none}
     .place-icon{font-size:20px;flex-shrink:0;margin-top:2px;line-height:1}
@@ -92,30 +84,29 @@
     .place-vote-row{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
     .vote-lbl{font-size:10px;color:#aaa;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0}
     .vote-count{font-size:12px;font-weight:500;color:#2387E4}
+    .btn-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:20px;line-height:1;padding:4px 8px;min-width:36px;min-height:36px;flex-shrink:0;align-self:flex-start;touch-action:manipulation}
+    .btn-del-row{background:none;border:none;cursor:pointer;color:#ccc;font-size:20px;line-height:1;padding:4px 8px;min-width:36px;min-height:36px;touch-action:manipulation}
   </style>
 </head>
 <body>
 
-<!-- LANDING -->
 <div id="sl" class="screen active">
   <div class="topbar"><span class="logotype">IMMO LUNCH CLUB</span><span class="logotype-sub">Wien</span></div>
   <div class="page-title">Terminabstimmung</div>
   <p class="intro-text">Gib deine E-Mail-Adresse ein und wir zeigen dir deine Gruppe für diesen Monat.</p>
   <label class="field-label">Deine E-Mail-Adresse</label>
   <input type="email" id="eIn" class="email-input" placeholder="name@beispiel.at" autocomplete="email" inputmode="email"/>
-  <button id="fBtn" onclick="find()" style="display:block;width:100%;padding:15px 20px;background:#2387E4;color:#fff;border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;touch-action:manipulation">Gruppe finden</button>
+  <button id="fBtn" class="btn-primary" onclick="find()">Gruppe finden</button>
   <p class="err-msg" id="eMsg"></p>
 </div>
 
-<!-- LOADING -->
 <div id="sload" class="screen">
   <div class="spinner"></div>
   <p class="load-label">Gruppe wird gesucht…</p>
 </div>
 
-<!-- GROUP -->
 <div id="sg" class="screen">
-  <button onclick="goBack()" style="background:none;border:none;cursor:pointer;font-size:12px;color:#aaa;padding:0;margin-bottom:1.5rem;display:flex;align-items:center;gap:5px;letter-spacing:.08em;text-transform:uppercase;touch-action:manipulation;min-height:44px">← Zurück</button>
+  <button class="btn-back" onclick="goBack()">← Zurück</button>
   <div class="g-topbar">
     <span class="g-logo">IMMO LUNCH CLUB</span>
     <span class="g-month" id="mBdg"></span>
@@ -129,7 +120,7 @@
       <input type="date" id="sD"/>
       <input type="time" id="sT" value="12:00"/>
     </div>
-    <button onclick="addSlot()" style="width:100%;padding:13px;background:#2387E4;color:#fff;border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;touch-action:manipulation;margin-top:8px">+ Hinzufügen</button>
+    <button class="btn-secondary" onclick="addSlot()">+ Hinzufügen</button>
   </div>
 
   <div class="section-title">Abstimmung Termine</div>
@@ -148,221 +139,154 @@
 </div>
 
 <script>
-// ── CONSTANTS ──
-const DAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-const MON  = ['Jänner','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-const AVCOLS = ['#2387E4','#2E6B4F','#9A6B2E'];
-const LS = 'ilc_'; // localStorage prefix
+const DAYS=['So','Mo','Di','Mi','Do','Fr','Sa'];
+const MON=['Jänner','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const AVCOLS=['#2387E4','#2E6B4F','#9A6B2E'];
+const LS='ilc_';
+let curRec=null,myIdx=-1,slots=[],places=[];
 
-let curRec = null, myIdx = -1, slots = [], places = [];
-
-// ── HELPERS ──
-function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
-}
-function goBack() { show('sl'); document.getElementById('fBtn').disabled = false; }
-function fmt(ds) {
-  const d = new Date(ds + 'T12:00:00');
-  return `${DAYS[d.getDay()]}, ${d.getDate()}. ${MON[d.getMonth()]}`;
-}
-function ini(name) {
-  return name.replace(/^[^A-Za-zÀ-ÖØ-öø-ÿ]+/, '')
-    .split(/\s+/).filter(w => /[A-Za-zÀ-ÖØ-öø-ÿ]/.test(w[0] || ''))
-    .map(w => w[0].toUpperCase()).slice(0, 2).join('');
-}
-function vbStyle(on, mine) {
-  const b = 'display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;min-height:32px;flex-shrink:0;border-radius:50%;font-size:14px;line-height:1;touch-action:manipulation;font-family:inherit;';
-  if (on)    return b + 'background:#2387E4;border:2px solid #2387E4;color:#fff;cursor:pointer;';
-  if (!mine) return b + 'background:#e8e8e8;border:2px solid #d0d0d0;color:transparent;opacity:0.3;cursor:default;';
-  return b + 'background:#e8e8e8;border:2px solid #bbb;color:transparent;cursor:pointer;';
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));}
+function goBack(){show('sl');document.getElementById('fBtn').disabled=false;}
+function fmt(ds){const d=new Date(ds+'T12:00:00');return`${DAYS[d.getDay()]}, ${d.getDate()}. ${MON[d.getMonth()]}`;}
+function ini(name){return name.replace(/^[^A-Za-zÀ-ÖØ-öø-ÿ]+/,'').split(/\s+/).filter(w=>/[A-Za-zÀ-ÖØ-öø-ÿ]/.test(w[0]||'')).map(w=>w[0].toUpperCase()).slice(0,2).join('');}
+function vbStyle(on,mine){
+  const b='display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;min-height:32px;flex-shrink:0;border-radius:50%;font-size:14px;line-height:1;touch-action:manipulation;font-family:inherit;';
+  if(on) return b+'background:#2387E4;border:2px solid #2387E4;color:#fff;cursor:pointer;';
+  if(!mine) return b+'background:#e8e8e8;border:2px solid #d0d0d0;color:transparent;opacity:0.3;cursor:default;';
+  return b+'background:#e8e8e8;border:2px solid #bbb;color:transparent;cursor:pointer;';
 }
 
-// ── FIND GROUP — calls our secure Netlify Function ──
-document.getElementById('eIn').addEventListener('keydown', e => { if (e.key === 'Enter') find(); });
+document.getElementById('eIn').addEventListener('keydown',e=>{if(e.key==='Enter')find();});
 
-async function find() {
-  const email = document.getElementById('eIn').value.trim().toLowerCase();
-  if (!email || !email.includes('@')) {
-    document.getElementById('eMsg').textContent = 'Bitte eine gültige E-Mail eingeben.'; return;
-  }
-  document.getElementById('eMsg').textContent = '';
-  document.getElementById('fBtn').disabled = true;
+async function find(){
+  const email=document.getElementById('eIn').value.trim().toLowerCase();
+  if(!email||!email.includes('@')){document.getElementById('eMsg').textContent='Bitte eine gültige E-Mail eingeben.';return;}
+  document.getElementById('eMsg').textContent='';
+  document.getElementById('fBtn').disabled=true;
   show('sload');
-  try {
-    // Token bleibt serverseitig — nur die E-Mail wird gesendet
-    const res  = await fetch(`/.netlify/functions/lookup?email=${encodeURIComponent(email)}`);
-    const data = await res.json();
-
-    if (res.status === 404 || !data.found) {
-      show('sl');
-      document.getElementById('eMsg').textContent = 'Diese E-Mail wurde nicht gefunden.';
-      document.getElementById('fBtn').disabled = false;
-      return;
-    }
-    if (!res.ok) throw new Error(data.error || 'Serverfehler');
-
-    curRec = data;
-    myIdx  = data.members.findIndex(m => m.email === email);
-    const d = new Date(data.date + 'T12:00:00');
-    document.getElementById('mBdg').textContent = MON[d.getMonth()] + ' ' + d.getFullYear();
-    document.getElementById('mRow').innerHTML = data.members.map((m, i) => `
+  try{
+    const res=await fetch(`/.netlify/functions/lookup?email=${encodeURIComponent(email)}`);
+    const data=await res.json();
+    if(res.status===404||!data.found){show('sl');document.getElementById('eMsg').textContent='Diese E-Mail wurde nicht gefunden.';document.getElementById('fBtn').disabled=false;return;}
+    if(!res.ok) throw new Error(data.error||'Serverfehler');
+    curRec=data;
+    myIdx=data.members.findIndex(m=>m.email===email);
+    const d=new Date(data.date+'T12:00:00');
+    document.getElementById('mBdg').textContent=MON[d.getMonth()]+' '+d.getFullYear();
+    document.getElementById('mRow').innerHTML=data.members.map((m,i)=>`
       <div class="member-cell">
         <div class="avatar" style="background:${AVCOLS[i]}">${ini(m.name)}</div>
         <div class="member-name">${m.name}</div>
-        ${i === myIdx ? '<div class="you-tag">Du</div>' : ''}
+        ${i===myIdx?'<div class="you-tag">Du</div>':''}
       </div>`).join('');
-    loadSlots(); loadPlaces();
-    renderVotes(); renderPlaces();
-    show('sg');
-  } catch(e) {
-    show('sl');
-    document.getElementById('eMsg').textContent = 'Fehler: ' + (e.message || 'Bitte nochmal versuchen.');
-    document.getElementById('fBtn').disabled = false;
+    loadSlots();loadPlaces();renderVotes();renderPlaces();show('sg');
+  }catch(e){
+    show('sl');document.getElementById('eMsg').textContent='Fehler: '+(e.message||'Bitte nochmal versuchen.');
+    document.getElementById('fBtn').disabled=false;
   }
 }
 
-// ── LOCAL STORAGE ──
-function loadSlots()  { try { slots  = JSON.parse(localStorage.getItem(LS + 's:' + curRec.id) || '[]'); } catch(e) { slots  = []; } }
-function saveSlots()  { try { localStorage.setItem(LS + 's:' + curRec.id, JSON.stringify(slots));  } catch(e) {} }
-function loadPlaces() { try { places = JSON.parse(localStorage.getItem(LS + 'p:' + curRec.id) || '[]'); } catch(e) { places = []; } }
-function savePlaces() { try { localStorage.setItem(LS + 'p:' + curRec.id, JSON.stringify(places)); } catch(e) {} }
+function loadSlots(){try{slots=JSON.parse(localStorage.getItem(LS+'s:'+curRec.id)||'[]');}catch(e){slots=[];}}
+function saveSlots(){try{localStorage.setItem(LS+'s:'+curRec.id,JSON.stringify(slots));}catch(e){}}
+function loadPlaces(){try{places=JSON.parse(localStorage.getItem(LS+'p:'+curRec.id)||'[]');}catch(e){places=[];}}
+function savePlaces(){try{localStorage.setItem(LS+'p:'+curRec.id,JSON.stringify(places));}catch(e){}}
 
-// ── SLOTS ──
-function addSlot() {
-  const d = document.getElementById('sD').value, t = document.getElementById('sT').value;
-  if (!d || !t) return;
-  const votes = [false, false, false];
-  if (myIdx >= 0) votes[myIdx] = true;
-  slots.push({ id: Date.now(), date: d, time: t, votes });
-  saveSlots(); renderVotes();
+function addSlot(){
+  const d=document.getElementById('sD').value,t=document.getElementById('sT').value;
+  if(!d||!t)return;
+  const votes=[false,false,false];if(myIdx>=0)votes[myIdx]=true;
+  slots.push({id:Date.now(),date:d,time:t,votes});saveSlots();renderVotes();
 }
-function toggleSlot(sid) {
-  const s = slots.find(x => x.id === sid); if (!s || myIdx < 0) return;
-  s.votes[myIdx] = !s.votes[myIdx]; saveSlots(); renderVotes();
-}
-function delSlot(sid) { slots = slots.filter(x => x.id !== sid); saveSlots(); renderVotes(); }
+function toggleSlot(sid){const s=slots.find(x=>x.id===sid);if(!s||myIdx<0)return;s.votes[myIdx]=!s.votes[myIdx];saveSlots();renderVotes();}
+function delSlot(sid){slots=slots.filter(x=>x.id!==sid);saveSlots();renderVotes();}
 
-function renderVotes() {
-  const a = document.getElementById('vA');
-  if (!slots.length) { a.innerHTML = '<div class="empty-hint">Noch keine Vorschläge.<br>Füge oben den ersten Termin hinzu.</div>'; return; }
-  const heads = curRec.members.map(m => `<th>${ini(m.name)}</th>`).join('');
-  const rows = slots.map(s => {
-    const tot = s.votes.filter(Boolean).length;
-    const cells = s.votes.map((v, i) => {
-      const mine = i === myIdx;
-      return `<td style="text-align:center;padding:8px 4px"><button style="${vbStyle(v, mine)}" ${mine ? `onclick="toggleSlot(${s.id})"` : ''}>${v ? '✓' : ''}</button></td>`;
+function renderVotes(){
+  const a=document.getElementById('vA');
+  if(!slots.length){a.innerHTML='<div class="empty-hint">Noch keine Vorschläge.<br>Füge oben den ersten Termin hinzu.</div>';return;}
+  const heads=curRec.members.map(m=>`<th>${ini(m.name)}</th>`).join('');
+  const rows=slots.map(s=>{
+    const tot=s.votes.filter(Boolean).length;
+    const cells=s.votes.map((v,i)=>{
+      const mine=i===myIdx;
+      return`<td style="text-align:center;padding:8px 4px"><button style="${vbStyle(v,mine)}" ${mine?`onclick="toggleSlot(${s.id})"`:''}>${v?'✓':''}</button></td>`;
     }).join('');
-    return `<tr>
-      <td style="padding:8px 6px;min-width:110px"><div class="slot-date">${fmt(s.date)}</div><div class="slot-time">${s.time} Uhr</div></td>
-      ${cells}
-      <td style="text-align:center;padding:8px 4px"><div class="count-dot cnt-${tot}">${tot}</div></td>
-      <td style="text-align:center;padding:4px 0"><button style="background:none;border:none;cursor:pointer;color:#ccc;font-size:20px;line-height:1;padding:4px 8px;min-width:36px;min-height:36px;" onclick="delSlot(${s.id})">×</button></td>
-    </tr>`;
+    return`<tr><td style="padding:8px 6px;min-width:110px"><div class="slot-date">${fmt(s.date)}</div><div class="slot-time">${s.time} Uhr</div></td>${cells}<td style="text-align:center;padding:8px 4px"><div class="count-dot cnt-${tot}">${tot}</div></td><td style="text-align:center;padding:4px 0"><button class="btn-del-row" onclick="delSlot(${s.id})">×</button></td></tr>`;
   }).join('');
-  a.innerHTML = `<table class="vote-table"><thead><tr><th></th>${heads}<th></th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
-  document.querySelectorAll('.best-banner').forEach(b => b.remove());
-  const best = slots.reduce((a, b) => b.votes.filter(Boolean).length > a.votes.filter(Boolean).length ? b : a, slots[0]);
-  const bc = best.votes.filter(Boolean).length;
-  if (bc > 0) {
-    const div = document.createElement('div'); div.className = 'best-banner';
-    div.innerHTML = bc === 3 ? `<strong>Perfekt!</strong> Alle können am ${fmt(best.date)}, ${best.time} Uhr!` : `<strong>Bester Termin:</strong> ${fmt(best.date)}, ${best.time} Uhr (${bc}/3)`;
+  a.innerHTML=`<table class="vote-table"><thead><tr><th></th>${heads}<th></th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.querySelectorAll('.best-banner').forEach(b=>b.remove());
+  const best=slots.reduce((a,b)=>b.votes.filter(Boolean).length>a.votes.filter(Boolean).length?b:a,slots[0]);
+  const bc=best.votes.filter(Boolean).length;
+  if(bc>0){
+    const div=document.createElement('div');div.className='best-banner';
+    div.innerHTML=bc===3?`<strong>Perfekt!</strong> Alle können am ${fmt(best.date)}, ${best.time} Uhr!`:`<strong>Bester Termin:</strong> ${fmt(best.date)}, ${best.time} Uhr (${bc}/3)`;
     document.querySelector('#sg .card:nth-child(6)').appendChild(div);
   }
 }
 
-// ── PLACE SEARCH (Nominatim — funktioniert auf echter Domain) ──
-let searchTimer = null;
-function onPlaceInput() {
+let searchTimer=null;
+function onPlaceInput(){
   clearTimeout(searchTimer);
-  const q = document.getElementById('placeIn').value.trim();
-  if (q.length < 2) { hideSug(); return; }
-  searchTimer = setTimeout(() => searchPlaces(q), 400);
+  const q=document.getElementById('placeIn').value.trim();
+  if(q.length<2){hideSug();return;}
+  searchTimer=setTimeout(()=>searchPlaces(q),400);
 }
-function onPlaceKey(e) {
-  if (e.key === 'Escape') hideSug();
-  if (e.key === 'Enter') { const q = document.getElementById('placeIn').value.trim(); if (q) { addPlaceManual(q); hideSug(); } }
+function onPlaceKey(e){
+  if(e.key==='Escape')hideSug();
+  if(e.key==='Enter'){const q=document.getElementById('placeIn').value.trim();if(q){addPlaceManual(q);hideSug();}}
 }
-function hideSug() { document.getElementById('sugBox').style.display = 'none'; }
+function hideSug(){document.getElementById('sugBox').style.display='none';}
 
-async function searchPlaces(q) {
-  document.getElementById('searchSpinner').style.display = 'block';
-  document.getElementById('searchIcon').style.display = 'none';
-  try {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q + ' Wien')}&format=json&limit=5&addressdetails=1&countrycodes=at`;
-    const r = await fetch(url, { headers: { 'Accept-Language': 'de', 'User-Agent': 'ImmolunchclubApp/1.0' } });
-    const data = await r.json();
-    showSuggestions(q, data);
-  } catch(e) {
-    showSuggestions(q, []);
-  }
-  document.getElementById('searchSpinner').style.display = 'none';
-  document.getElementById('searchIcon').style.display = 'block';
+async function searchPlaces(q){
+  document.getElementById('searchSpinner').style.display='block';
+  document.getElementById('searchIcon').style.display='none';
+  try{
+    const url=`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q+' Wien')}&format=json&limit=5&addressdetails=1&countrycodes=at`;
+    const r=await fetch(url,{headers:{'Accept-Language':'de','User-Agent':'ImmolunchclubApp/1.0'}});
+    const data=await r.json();
+    showSuggestions(q,data);
+  }catch(e){showSuggestions(q,[]);}
+  document.getElementById('searchSpinner').style.display='none';
+  document.getElementById('searchIcon').style.display='block';
 }
-
-function showSuggestions(q, results) {
-  const box = document.getElementById('sugBox');
-  const items = results.slice(0, 5).map(r => {
-    const name = r.namedetails?.name || r.display_name.split(',')[0];
-    const addr = r.display_name.split(',').slice(1, 3).join(',').trim();
-    return `<div class="sug-item" onclick='selectPlace(${JSON.stringify(name)}, ${JSON.stringify(addr)}, "${r.lat}", "${r.lon}")'>
-      <div class="sug-name">${name}</div><div class="sug-addr">${addr}</div>
-    </div>`;
+function showSuggestions(q,results){
+  const box=document.getElementById('sugBox');
+  const items=results.slice(0,5).map(r=>{
+    const name=r.namedetails?.name||r.display_name.split(',')[0];
+    const addr=r.display_name.split(',').slice(1,3).join(',').trim();
+    return`<div class="sug-item" onclick='selectPlace(${JSON.stringify(name)},${JSON.stringify(addr)},"${r.lat}","${r.lon}")'><div class="sug-name">${name}</div><div class="sug-addr">${addr}</div></div>`;
   }).join('');
-  box.innerHTML = items + `<div class="sug-manual" onclick='addPlaceManual(${JSON.stringify(q)})'>+ &ldquo;${q}&rdquo; manuell hinzufügen</div>`;
-  box.style.display = 'block';
+  box.innerHTML=items+`<div class="sug-manual" onclick='addPlaceManual(${JSON.stringify(q)})'>+ &ldquo;${q}&rdquo; manuell hinzufügen</div>`;
+  box.style.display='block';
 }
+function selectPlace(name,addr,lat,lon){
+  hideSug();document.getElementById('placeIn').value='';
+  const mapsUrl=`https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+  const votes=[false,false,false];if(myIdx>=0)votes[myIdx]=true;
+  places.push({id:Date.now(),name,addr,mapsUrl,proposerIdx:myIdx,votes});savePlaces();renderPlaces();
+}
+function addPlaceManual(name){
+  hideSug();document.getElementById('placeIn').value='';
+  const mapsUrl=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name+' Wien')}`;
+  const votes=[false,false,false];if(myIdx>=0)votes[myIdx]=true;
+  places.push({id:Date.now(),name,addr:'Wien',mapsUrl,proposerIdx:myIdx,votes});savePlaces();renderPlaces();
+}
+function togglePlace(pid){const p=places.find(x=>x.id===pid);if(!p||myIdx<0)return;p.votes[myIdx]=!p.votes[myIdx];savePlaces();renderPlaces();}
+function delPlace(pid){places=places.filter(x=>x.id!==pid);savePlaces();renderPlaces();}
 
-function selectPlace(name, addr, lat, lon) {
-  hideSug(); document.getElementById('placeIn').value = '';
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
-  const votes = [false, false, false]; if (myIdx >= 0) votes[myIdx] = true;
-  places.push({ id: Date.now(), name, addr, mapsUrl, proposerIdx: myIdx, votes });
-  savePlaces(); renderPlaces();
-}
-function addPlaceManual(name) {
-  hideSug(); document.getElementById('placeIn').value = '';
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' Wien')}`;
-  const votes = [false, false, false]; if (myIdx >= 0) votes[myIdx] = true;
-  places.push({ id: Date.now(), name, addr: 'Wien', mapsUrl, proposerIdx: myIdx, votes });
-  savePlaces(); renderPlaces();
-}
-function togglePlace(pid) {
-  const p = places.find(x => x.id === pid); if (!p || myIdx < 0) return;
-  p.votes[myIdx] = !p.votes[myIdx]; savePlaces(); renderPlaces();
-}
-function delPlace(pid) { places = places.filter(x => x.id !== pid); savePlaces(); renderPlaces(); }
-
-function renderPlaces() {
-  const el = document.getElementById('placeList');
-  if (!places.length) { el.innerHTML = '<div class="empty-hint" style="margin-top:8px">Noch keine Vorschläge. Suche oben nach einem Restaurant.</div>'; return; }
-  el.innerHTML = places.map(p => {
-    const tot = p.votes.filter(Boolean).length;
-    const proposer = (p.proposerIdx >= 0 && curRec.members[p.proposerIdx]) ? curRec.members[p.proposerIdx].name.split(' ')[0] : '';
-    const voteBtns = p.votes.map((v, i) => {
-      const mine = i === myIdx;
-      return `<button style="${vbStyle(v, mine)}" ${mine ? `onclick="togglePlace(${p.id})"` : ''}>${v ? '✓' : ''}</button>`;
-    }).join('');
-    return `<div class="place-item">
-      <div class="place-icon">🍽️</div>
-      <div class="place-info">
-        <div class="place-name">${p.name}</div>
-        ${p.addr && p.addr !== 'Wien' ? `<div class="place-addr">${p.addr}</div>` : ''}
-        ${proposer ? `<div class="place-proposer">Vorschlag von ${proposer}</div>` : ''}
-        <a class="place-maps-link" href="${p.mapsUrl}" target="_blank" rel="noopener">📍 In Google Maps öffnen</a>
-        <div class="place-vote-row">
-          <span class="vote-lbl">Gefällt mir</span>${voteBtns}
-          ${tot > 0 ? `<span class="vote-count">${tot}/3</span>` : ''}
-        </div>
-      </div>
-      <button style="background:none;border:none;cursor:pointer;color:#ccc;font-size:20px;line-height:1;padding:4px 8px;min-width:36px;min-height:36px;flex-shrink:0;align-self:flex-start;" onclick="delPlace(${p.id})">×</button>
-    </div>`;
+function renderPlaces(){
+  const el=document.getElementById('placeList');
+  if(!places.length){el.innerHTML='<div class="empty-hint" style="margin-top:8px">Noch keine Vorschläge. Suche oben nach einem Restaurant.</div>';return;}
+  el.innerHTML=places.map(p=>{
+    const tot=p.votes.filter(Boolean).length;
+    const proposer=(p.proposerIdx>=0&&curRec.members[p.proposerIdx])?curRec.members[p.proposerIdx].name.split(' ')[0]:'';
+    const voteBtns=p.votes.map((v,i)=>{const mine=i===myIdx;return`<button style="${vbStyle(v,mine)}" ${mine?`onclick="togglePlace(${p.id})"`:''}>${v?'✓':''}</button>`;}).join('');
+    return`<div class="place-item"><div class="place-icon">🍽️</div><div class="place-info"><div class="place-name">${p.name}</div>${p.addr&&p.addr!=='Wien'?`<div class="place-addr">${p.addr}</div>`:''} ${proposer?`<div class="place-proposer">Vorschlag von ${proposer}</div>`:''}<a class="place-maps-link" href="${p.mapsUrl}" target="_blank" rel="noopener">📍 In Google Maps öffnen</a><div class="place-vote-row"><span class="vote-lbl">Gefällt mir</span>${voteBtns}${tot>0?`<span class="vote-count">${tot}/3</span>`:''}</div></div><button class="btn-del" onclick="delPlace(${p.id})">×</button></div>`;
   }).join('');
 }
 
-// ── INIT ──
-const td = new Date(), pad = n => String(n).padStart(2, '0');
-document.getElementById('sD').value = `${td.getFullYear()}-${pad(td.getMonth() + 1)}-${pad(td.getDate())}`;
-document.addEventListener('click', e => { if (!e.target.closest('#sugBox') && !e.target.closest('#placeIn')) hideSug(); });
+const td=new Date(),pad=n=>String(n).padStart(2,'0');
+document.getElementById('sD').value=`${td.getFullYear()}-${pad(td.getMonth()+1)}-${pad(td.getDate())}`;
+document.addEventListener('click',e=>{if(!e.target.closest('#sugBox')&&!e.target.closest('#placeIn'))hideSug();});
 </script>
 </body>
 </html>
