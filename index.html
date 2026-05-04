@@ -142,7 +142,6 @@
 const DAYS=['So','Mo','Di','Mi','Do','Fr','Sa'];
 const MON=['Jänner','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const AVCOLS=['#2387E4','#2E6B4F','#9A6B2E'];
-const LS='ilc_';
 let curRec=null,myIdx=-1,slots=[],places=[];
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));}
@@ -186,10 +185,20 @@ async function find(){
   }
 }
 
-function loadSlots(){try{slots=JSON.parse(localStorage.getItem(LS+'s:'+curRec.id)||'[]');}catch(e){slots=[];}}
-function saveSlots(){try{localStorage.setItem(LS+'s:'+curRec.id,JSON.stringify(slots));}catch(e){}}
-function loadPlaces(){try{places=JSON.parse(localStorage.getItem(LS+'p:'+curRec.id)||'[]');}catch(e){places=[];}}
-function savePlaces(){try{localStorage.setItem(LS+'p:'+curRec.id,JSON.stringify(places));}catch(e){}}
+function loadSlots(){slots=curRec.slots||[];}
+function loadPlaces(){places=curRec.places||[];}
+
+async function saveToAirtable(){
+  try{
+    await fetch('/.netlify/functions/save',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({recordId:curRec.id,slots,places})
+    });
+  }catch(e){console.error('Speichern fehlgeschlagen',e);}
+}
+function saveSlots(){saveToAirtable();}
+function savePlaces(){saveToAirtable();}
 
 function addSlot(){
   const d=document.getElementById('sD').value,t=document.getElementById('sT').value;
