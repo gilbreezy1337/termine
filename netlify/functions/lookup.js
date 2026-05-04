@@ -8,76 +8,58 @@ exports.handler = async function(event) {
   const BASE_ID = 'appflLzAciq6NMD0i';
   const TABLE   = 'Matchlogs_VIE';
 
-  if (!PAT) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Token fehlt' }) };
-  }
+  if (!PAT) return { statusCode: 500, body: JSON.stringify({ error: 'Token fehlt' }) };
 
   try {
-    // Alle Records laden, dann in JS suchen — vermeidet filterByFormula-Probleme
     let allRecords = [];
     let offset = '';
-
     do {
       const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}`
         + `?pageSize=100${offset ? '&offset=' + offset : ''}`;
       const res  = await fetch(url, { headers: { Authorization: 'Bearer ' + PAT } });
       const data = await res.json();
-
-      if (!res.ok) {
-        return { statusCode: res.status, body: JSON.stringify({ error: data?.error?.message || 'Airtable-Fehler' }) };
-      }
-
+      if (!res.ok) return { statusCode: res.status, body: JSON.stringify({ error: data?.error?.message }) };
       allRecords = allRecords.concat(data.records || []);
       offset = data.offset || '';
     } while (offset);
 
-    // Neueste zuerst sortieren
     allRecords.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
 
-    // Record mit dieser E-Mail finden
     let found = null;
     for (const rec of allRecords) {
-      const fields = rec.fields;
-      // Alle String-Felder durchsuchen
-      for (const val of Object.values(fields)) {
+      for (const val of Object.values(rec.fields)) {
         if (typeof val === 'string' && val.toLowerCase().includes(email)) {
-          found = rec;
-          break;
+          found = rec; break;
         }
       }
       if (found) break;
     }
 
-    if (!found) {
-      return { statusCode: 404, body: JSON.stringify({ found: false }) };
-    }
+    if (!found) return { statusCode: 404, body: JSON.stringify({ found: false }) };
 
     const fields = found.fields;
-
-    // Felder automatisch erkennen
-    let membersRaw = '';
-    let dateRaw    = '';
-
+    let membersRaw = '', dateRaw = '';
     for (const val of Object.values(fields)) {
-      if (typeof val === 'string' && val.includes('@') && val.includes('(') && val.includes(')')) {
-        membersRaw = val;
-      }
-      if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val) && !dateRaw) {
-        dateRaw = val;
-      }
+      if (typeof val === 'string' && val.includes('@') && val.includes('(') && val.includes(')')) membersRaw = val;
+      if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val) && !dateRaw) dateRaw = val;
     }
-
-    // Datum aus createdTime falls kein Datumsfeld gefunden
     if (!dateRaw) dateRaw = found.createdTime;
+
+    // Parse stored slots and places from Airtable fields
+    let slots = [], places = [];
+    try { slots  = JSON.parse(fields['Termine_JSON']     || '[]'); } catch(e) {}
+    try { places = JSON.parse(fields['Restaurants_JSON'] || '[]'); } catch(e) {}
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        found:   true,
+        found: true,
         id:      found.id,
         date:    dateRaw.slice(0, 10),
-        members: parseMembers(membersRaw)
+        members: parseMembers(membersRaw),
+        slots,
+        places
       })
     };
   } catch(e) {
