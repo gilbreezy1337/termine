@@ -8,9 +8,7 @@ exports.handler = async function(event) {
   const BASE_ID = 'appflLzAciq6NMD0i';
   const TABLE   = 'Matchlogs_VIE';
 
-  // Echte Feld-IDs aus Airtable
-  const FLD_MEMBERS     = 'fldXermcL7ly0GeHv';
-  const FLD_DATE        = 'fldxAaFiiC7xve8cj';
+  // Feld-IDs (aus Airtable bestätigt)
   const FLD_TERMINE     = 'fldIBr03MFzpv3atR';
   const FLD_RESTAURANTS = 'fldX8VgpiyLv1B12v';
 
@@ -20,8 +18,9 @@ exports.handler = async function(event) {
     let allRecords = [];
     let offset = '';
     do {
+      // cellValuesByFieldId=true → Felder werden mit IDs zurückgegeben
       const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}`
-        + `?pageSize=100${offset ? '&offset=' + offset : ''}`;
+        + `?pageSize=100&cellValuesByFieldId=true${offset ? '&offset=' + offset : ''}`;
       const res  = await fetch(url, { headers: { Authorization: 'Bearer ' + PAT } });
       const data = await res.json();
       if (!res.ok) return { statusCode: res.status, body: JSON.stringify({ error: data?.error?.message }) };
@@ -29,19 +28,33 @@ exports.handler = async function(event) {
       offset = data.offset || '';
     } while (offset);
 
+    // Neueste zuerst
     allRecords.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
 
+    // Email in allen String-Feldern suchen (funktioniert unabhängig vom Feldnamen)
     let found = null;
     for (const rec of allRecords) {
-      const membersVal = rec.fields[FLD_MEMBERS] || '';
-      if (membersVal.toLowerCase().includes(email)) {
-        found = rec; break;
+      for (const val of Object.values(rec.fields)) {
+        if (typeof val === 'string' && val.toLowerCase().includes(email)) {
+          found = rec; break;
+        }
       }
+      if (found) break;
     }
 
     if (!found) return { statusCode: 404, body: JSON.stringify({ found: false }) };
 
     const fields = found.fields;
+
+    // Members-Feld: das Feld das @ und () enthält
+    let membersRaw = '', dateRaw = '';
+    for (const val of Object.values(fields)) {
+      if (typeof val === 'string' && val.includes('@') && val.includes('(') && val.includes(')')) membersRaw = val;
+      if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val) && !dateRaw) dateRaw = val;
+    }
+    if (!dateRaw) dateRaw = found.createdTime;
+
+    // Slots und Places per Feld-ID lesen (funktioniert jetzt weil cellValuesByFieldId=true)
     let slots = [], places = [];
     try { slots  = JSON.parse(fields[FLD_TERMINE]      || '[]'); } catch(e) {}
     try { places = JSON.parse(fields[FLD_RESTAURANTS]  || '[]'); } catch(e) {}
@@ -52,8 +65,8 @@ exports.handler = async function(event) {
       body: JSON.stringify({
         found:   true,
         id:      found.id,
-        date:    (fields[FLD_DATE] || found.createdTime).slice(0, 10),
-        members: parseMembers(fields[FLD_MEMBERS] || ''),
+        date:    dateRaw.slice(0, 10),
+        members: parseMembers(membersRaw),
         slots,
         places
       })
