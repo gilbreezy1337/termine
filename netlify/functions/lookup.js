@@ -8,6 +8,12 @@ exports.handler = async function(event) {
   const BASE_ID = 'appflLzAciq6NMD0i';
   const TABLE   = 'Matchlogs_VIE';
 
+  // Echte Feld-IDs aus Airtable
+  const FLD_MEMBERS     = 'fldXermcL7ly0GeHv';
+  const FLD_DATE        = 'fldxAaFiiC7xve8cj';
+  const FLD_TERMINE     = 'fldIBr03MFzpv3atR';
+  const FLD_RESTAURANTS = 'fldX8VgpiyLv1B12v';
+
   if (!PAT) return { statusCode: 500, body: JSON.stringify({ error: 'Token fehlt' }) };
 
   try {
@@ -27,37 +33,27 @@ exports.handler = async function(event) {
 
     let found = null;
     for (const rec of allRecords) {
-      for (const val of Object.values(rec.fields)) {
-        if (typeof val === 'string' && val.toLowerCase().includes(email)) {
-          found = rec; break;
-        }
+      const membersVal = rec.fields[FLD_MEMBERS] || '';
+      if (membersVal.toLowerCase().includes(email)) {
+        found = rec; break;
       }
-      if (found) break;
     }
 
     if (!found) return { statusCode: 404, body: JSON.stringify({ found: false }) };
 
     const fields = found.fields;
-    let membersRaw = '', dateRaw = '';
-    for (const val of Object.values(fields)) {
-      if (typeof val === 'string' && val.includes('@') && val.includes('(') && val.includes(')')) membersRaw = val;
-      if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val) && !dateRaw) dateRaw = val;
-    }
-    if (!dateRaw) dateRaw = found.createdTime;
-
-    // Parse stored slots and places from Airtable fields
     let slots = [], places = [];
-    try { slots  = JSON.parse(fields['Termine_JSON']     || '[]'); } catch(e) {}
-    try { places = JSON.parse(fields['Restaurants_JSON'] || '[]'); } catch(e) {}
+    try { slots  = JSON.parse(fields[FLD_TERMINE]      || '[]'); } catch(e) {}
+    try { places = JSON.parse(fields[FLD_RESTAURANTS]  || '[]'); } catch(e) {}
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        found: true,
+        found:   true,
         id:      found.id,
-        date:    dateRaw.slice(0, 10),
-        members: parseMembers(membersRaw),
+        date:    (fields[FLD_DATE] || found.createdTime).slice(0, 10),
+        members: parseMembers(fields[FLD_MEMBERS] || ''),
         slots,
         places
       })
