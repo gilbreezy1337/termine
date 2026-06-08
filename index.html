@@ -212,8 +212,12 @@ function delSlot(sid){slots=slots.filter(x=>x.id!==sid);saveSlots();renderVotes(
 function renderVotes(){
   const a=document.getElementById('vA');
   if(!slots.length){a.innerHTML='<div class="empty-hint">Noch keine Vorschläge.<br>Füge oben den ersten Termin hinzu.</div>';return;}
-  const heads=curRec.members.map(m=>`<th>${ini(m.name)}</th>`).join('');
-  const rows=slots.map(s=>{
+  const heads = curRec.members.map(m => `<th>${ini(m.name)}</th>`).join('');
+// Chronologisch sortieren
+const sorted = [...slots].sort((a, b) =>
+  new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time)
+);
+const rows = sorted.map(s => {
     const tot=s.votes.filter(Boolean).length;
     const cells=s.votes.map((v,i)=>{
       const mine=i===myIdx;
