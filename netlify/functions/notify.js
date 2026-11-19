@@ -15,7 +15,7 @@ exports.handler = async function(event) {
 
   let body; try { body = JSON.parse(event.body); } catch(e) { return { statusCode: 400, body: JSON.stringify({ error: 'Ungültiger Body' }) }; }
   const { recordId, senderEmail } = body;
-  if (!recordId || !/^rec[A-Za-z0-9]+$/.test(recordId)) return { statusCode: 400, body: JSON.stringify({ error: 'Ungültige Record ID' }) };
+  if (typeof recordId !== 'string' || !/^rec[A-Za-z0-9]{8,}$/.test(recordId)) return { statusCode: 400, body: JSON.stringify({ error: 'notify: Record ID ungültig (' + typeof recordId + ', ' + String(recordId).slice(0,20) + ')' }) };
 
   try {
     const r = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}/${recordId}?cellValuesByFieldId=true`, { headers: { Authorization: 'Bearer ' + PAT } });
