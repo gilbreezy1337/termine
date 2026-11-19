@@ -54,8 +54,8 @@
     .vote-table th:first-child{text-align:left}
     .vote-table td{padding:9px 6px;border-bottom:1px solid #ebebeb;vertical-align:middle}
     .vote-table tr:last-child td{border-bottom:none}
-    .slot-date{font-weight:500;font-size:14px;color:#1a1a1a}
-    .slot-time{font-size:12px;font-weight:300;color:#707070;margin-top:2px}
+    .slot-date{font-weight:500;font-size:13px;color:#1a1a1a}
+    .slot-time{font-size:15px;font-weight:500;color:#555;margin-top:2px}
     .count-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;margin:0 auto}
     .cnt-0{background:#ebebea;color:#aaa}.cnt-1{background:#fef3cd;color:#7a5a00}.cnt-2{background:#d4ede0;color:#1b5e20}.cnt-3{background:#2387E4;color:#fff}
     .place-search-wrap{position:relative;margin-bottom:8px}
@@ -136,6 +136,13 @@
     <div class="suggestions" id="sugBox"></div>
     <div id="placeList"></div>
   </div>
+
+  <div class="section-title">Gruppe informieren</div>
+  <div class="card">
+    <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:4px">Schickt allen in deiner Gruppe eine E-Mail mit den aktuellen Terminen, Restaurants und Stimmen.</p>
+    <button class="btn-secondary" id="notifyBtn" onclick="notifyGroup()">Mail an Gruppe senden</button>
+    <p id="notifyMsg" style="font-size:13px;margin-top:8px;min-height:18px"></p>
+  </div>
 </div>
 
 <script>
@@ -197,6 +204,18 @@ async function saveToAirtable(){
     });
   }catch(e){console.error('Speichern fehlgeschlagen',e);}
 }
+async function notifyGroup(){
+  const b=document.getElementById('notifyBtn'),m=document.getElementById('notifyMsg');
+  b.disabled=true;m.style.color='#888';m.textContent='Wird gesendet…';
+  try{
+    await saveToAirtable();
+    const r=await fetch('/.netlify/functions/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({recordId:curRec.id,senderEmail:curRec.members[myIdx]?curRec.members[myIdx].email:''})});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'Fehler');
+    m.style.color='#1b5e20';m.textContent='✓ Mail an '+d.sent+' Personen gesendet.';
+    setTimeout(()=>{b.disabled=false;},30000);
+  }catch(e){m.style.color='#c0392b';m.textContent='Fehler: '+e.message;b.disabled=false;}
+}
 function saveSlots(){saveToAirtable();}
 function savePlaces(){saveToAirtable();}
 
@@ -212,12 +231,8 @@ function delSlot(sid){slots=slots.filter(x=>x.id!==sid);saveSlots();renderVotes(
 function renderVotes(){
   const a=document.getElementById('vA');
   if(!slots.length){a.innerHTML='<div class="empty-hint">Noch keine Vorschläge.<br>Füge oben den ersten Termin hinzu.</div>';return;}
-  const heads = curRec.members.map(m => `<th>${ini(m.name)}</th>`).join('');
-// Chronologisch sortieren
-const sorted = [...slots].sort((a, b) =>
-  new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time)
-);
-const rows = sorted.map(s => {
+  const heads=curRec.members.map(m=>`<th>${ini(m.name)}</th>`).join('');
+  const rows=[...slots].sort((a,b)=>new Date(a.date+'T'+a.time)-new Date(b.date+'T'+b.time)).map(s=>{
     const tot=s.votes.filter(Boolean).length;
     const cells=s.votes.map((v,i)=>{
       const mine=i===myIdx;
