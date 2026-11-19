@@ -3,30 +3,41 @@ const MON=['Jänner','Februar','März','April','Mai','Juni','Juli','August','Sep
 const DAYS=['So','Mo','Di','Mi','Do','Fr','Sa'];
 const fmt = ds => { const d=new Date(ds+'T12:00:00'); return `${DAYS[d.getDay()]}, ${d.getDate()}. ${MON[d.getMonth()]}`; };
 
+const SEATABLE_SERVER = 'https://cloud.seatable.io';
+const TABLE = 'MatchLogs_VIE';
+let cachedAuth = null;
+async function getAuth(t) {
+  if (cachedAuth && Date.now() < cachedAuth.expiresAt) return cachedAuth;
+  const res = await fetch(`${SEATABLE_SERVER}/api/v2.1/dtable/app-access-token/`, { headers: { Authorization: 'Bearer ' + t } });
+  if (!res.ok) throw new Error('SeaTable auth failed: ' + res.status);
+  const d = await res.json();
+  cachedAuth = { access_token: d.access_token, dtable_uuid: d.dtable_uuid, expiresAt: Date.now() + 24*60*60*1000 };
+  return cachedAuth;
+}
+
 exports.handler = async function(event) {
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
 
-  const PAT = process.env.AIRTABLE_PAT, KEY = process.env.RESEND_API_KEY;
+  const TOKEN = process.env.SEATABLE_TOKEN, KEY = process.env.RESEND_API_KEY;
   const FROM = process.env.MAIL_FROM || 'IMMO LUNCH CLUB <lunch@mail.immolunchclub.com>';
   const SITE = process.env.SITE_URL || 'https://termin-abstimmung.netlify.app';
-  const BASE_ID='appflLzAciq6NMD0i', TABLE='Matchlogs_VIE';
-  const FLD_MEMBERS='fldXermcL7ly0GeHv', FLD_TERMINE='fldIBr03MFzpv3atR', FLD_REST='fldX8VgpiyLv1B12v';
-  if (!PAT || !KEY) return { statusCode: 500, body: JSON.stringify({ error: 'Server nicht konfiguriert (Token/Mail-Key fehlt)' }) };
+  if (!TOKEN || !KEY) return { statusCode: 500, body: JSON.stringify({ error: 'Server nicht konfiguriert (Token/Mail-Key fehlt)' }) };
 
   let body; try { body = JSON.parse(event.body); } catch(e) { return { statusCode: 400, body: JSON.stringify({ error: 'Ungültiger Body' }) }; }
   const { recordId, senderEmail } = body;
-  if (typeof recordId !== 'string' || !/^[A-Za-z0-9_-]{10,40}$/.test(recordId)) return { statusCode: 400, body: JSON.stringify({ error: 'notify: Record ID ungültig (' + typeof recordId + ', ' + String(recordId).slice(0,20) + ')' }) };
+  if (typeof recordId !== 'string' || !/^[A-Za-z0-9_-]{10,40}$/.test(recordId)) return { statusCode: 400, body: JSON.stringify({ error: 'Ungültige Record ID' }) };
 
   try {
-    const r = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}/${recordId}?cellValuesByFieldId=true`, { headers: { Authorization: 'Bearer ' + PAT } });
-    const rec = await r.json();
-    if (!r.ok) return { statusCode: r.status, body: JSON.stringify({ error: rec?.error?.message || 'Airtable-Fehler' }) };
-    const f = rec.fields || {};
-    const members = parseMembers(f[FLD_MEMBERS] || '');
+    const auth = await getAuth(TOKEN);
+    const r = await fetch(`${SEATABLE_SERVER}/api-gateway/api/v2/dtables/${auth.dtable_uuid}/rows/${recordId}/?table_name=${encodeURIComponent(TABLE)}&convert_keys=true`, { headers: { Authorization: 'Bearer ' + auth.access_token } });
+    const f = await r.json();
+    if (!r.ok) return { statusCode: r.status, body: JSON.stringify({ error: f?.error_message || f?.error_msg || 'SeaTable-Fehler' }) };
+    const raw = f['matches'] || '';
+    const members = parseMembers(raw);
     if (!members.length) return { statusCode: 400, body: JSON.stringify({ error: 'Keine Mitglieder gefunden' }) };
     const pj = v => { try { return JSON.parse(v || '[]'); } catch(e) { return []; } };
-    const slots = pj(f[FLD_TERMINE]).sort((a,b)=>new Date(a.date+'T'+a.time)-new Date(b.date+'T'+b.time));
-    const places = pj(f[FLD_REST]);
+    const slots = pj(f['Termine_JSON']).sort((a,b)=>new Date(a.date+'T'+a.time)-new Date(b.date+'T'+b.time));
+    const places = pj(f['Restaurants_JSON']);
     const first = i => (members[i] ? members[i].name.split(' ')[0] : '?');
     const who = votes => (votes||[]).map((v,i)=>v?first(i):null).filter(Boolean).join(', ') || '–';
     const sender = members.find(m => m.email === String(senderEmail||'').toLowerCase());
